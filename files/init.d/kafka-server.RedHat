@@ -29,6 +29,7 @@ start() {
   fi
   /sbin/runuser $KAFKA_USER -c "nohup $KAFKA_HOME/bin/kafka-server-start.sh $KAFKA_CONF/server.properties > ${KAFKA_LOG_DIR}/server.out 2> ${KAFKA_LOG_DIR}/server.err &"
   RETVAL=$?
+  sleep 2
   return $RETVAL
 }
 
@@ -36,14 +37,14 @@ stop() {
   echo -n "Stopping Kafka: "
   /sbin/runuser  $KAFKA_USER  -c "ps -ef | grep kafka.Kafka | grep -v grep | awk '{print \$2}' | xargs kill"
   echo " done."
-  exit 0
+  return 0
 }
 
 hardstop() {
   echo -n "Stopping (hard) Kafka: "
   /sbin/runuser  $KAFKA_USER  -c "ps -ef | grep kafka.Kafka | grep -v grep | awk '{print \$2}' | xargs kill -9"
   echo " done."
-  exit 0
+  return 0
 }
 
 restart() {
